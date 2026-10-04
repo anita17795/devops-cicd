@@ -24,3 +24,15 @@ jobs:
 
       - name: Push Docker image
         run: docker push anitamahi/dev-app:latest
+
+              - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            docker pull anitamahi/dev-app:latest
+            docker stop my-web-container || true
+            docker rm my-web-container || true
+            docker run -d -p 80:80 --name my-web-container anitamahi/dev-app:latest
