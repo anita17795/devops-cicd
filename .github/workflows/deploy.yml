@@ -16,8 +16,8 @@ jobs:
       - name: Build Docker image
         run: docker build -t anitamahi/dev-app:latest .
         
-        - name: Test Docker container
-          run: |
+      - name: Test Docker container
+        run: |
           docker run -d -p 8080:80 --name test-container anitamahi/dev-app:latest
           sleep 3
           curl -f http://localhost:8080
